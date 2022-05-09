@@ -3,13 +3,27 @@ project(yet_another_knowledge_base)
 
 find_package(catkin REQUIRED COMPONENTS
   rospy
+  message_generation
+  std_msgs
+)
+
+add_service_files(
+  FILES
+  YakobUpdate.srv
 )
 
 catkin_python_setup()
 
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
+
+
+
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES symbolic_fact_generation
-#  CATKIN_DEPENDS gazebo_msgs roscpp rospy sensor_msgs
+  CATKIN_DEPENDS message_runtime
 #  DEPENDS system_lib
 )
