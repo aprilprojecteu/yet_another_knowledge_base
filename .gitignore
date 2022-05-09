@@ -2,3 +2,4 @@
 **/.vscode
 **/apache-jena-fuseki-*
 **/run
+*.pyc
