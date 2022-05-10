@@ -14,7 +14,8 @@ class YetAnotherKnowledgeBase:
         self.service_remove_fact = rospy.Service(
             "yakob_remove_facts", YakobUpdateFacts, self.handle_yakob_remove_facts)
 
-        self.c = FusekiConnector()
+        self.datatype_map_path = rospy.get_param("/YAKoB/datatype_map")
+        self.c = FusekiConnector(self.datatype_map_path)
 
     def run(self):
         while not rospy.is_shutdown():

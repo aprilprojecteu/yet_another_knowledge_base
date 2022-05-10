@@ -1,38 +1,40 @@
 import rospy
-from yet_another_knowledge_base.srv import YakobUpdate
-
-from rdflib import Graph, URIRef
+from yet_another_knowledge_base.srv import YakobUpdateFacts
+from yet_another_knowledge_base.msg import Fact
 from rdflib.namespace import RDF, Namespace
 
-ontology_path = "/home/mrenz/projects/incorap_rdf/incorap_domain.owl"
 
-f = open(ontology_path, "r")
-o = f.read()
-f.close()
+def get_dummy_objects():
+    incorap = Namespace('http://dfki.de/incorap/incorap_domain#')
+    return [
+        ('relay_1', incorap["Physical_Object"].toPython()),
+        ('screwdriver_1', incorap["Physical_Object"].toPython()),
+        ('powerdrill_1', incorap["Physical_Object"].toPython()),
+        ('multimeter_1', incorap["Physical_Object"].toPython())
+    ]
 
-rospy.init_node("yakob_test_node")
-rospy.wait_for_service("yakob_add_ontology")
-try:
-    add_ontology = rospy.ServiceProxy("yakob_add_ontology", YakobUpdate)
-    res = add_ontology(o)
-    rospy.loginfo(f"[YAKoB]: add_ontology response code: {res}")
-except rospy.ServiceException:
-    rospy.logerr("[yakob_add_ontology] something went wrong")
 
-incorap = Namespace('http://dfki.de/incorap/incorap_domain#')
-fs = Graph()
-fs.bind('incorap', incorap)
-subj = 'mobipick'
-label = 'http://dfki.de/incorap/incorap_domain#Robot'
-fs.add((URIRef(subj), RDF.type, URIRef(label)))
+def test_add_facts():
 
-rospy.wait_for_service("yakob_add_fact")
-try:
-    add_fact = rospy.ServiceProxy("yakob_add_fact", YakobUpdate)
-    res = add_fact(fs.serialize(format='ttl'))
-    rospy.loginfo(f"[YAKoB]: add_fact response code: {res}")
-except rospy.ServiceException:
-    rospy.logerr("[yakob_add_fact] something went wrong")
+    print("In test_add_facts()")
 
-fs.subject((RDF.type, incorap.Robot))
-fs.subject_predicates((URIRef('mobipick'), RDF.type))
+    facts = []
+    for obj in get_dummy_objects():
+        f = Fact()
+        f.fact = (obj[0], RDF.type, obj[1])
+        f.object_type = "URI"
+        facts.append(f)
+
+    rospy.wait_for_service("yakob_add_facts")
+    try:
+        add_facts = rospy.ServiceProxy("yakob_add_facts", YakobUpdateFacts)
+        add_facts(facts)
+    except rospy.ServiceException:
+        rospy.logerr("[yakob_add_fact] something went wrong")
+
+
+if __name__ == "__main__":
+    rospy.init_node("yakob_test_node")
+    while not rospy.is_shutdown():
+        test_add_facts()
+        rospy.sleep(5)

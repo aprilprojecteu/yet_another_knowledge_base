@@ -1,0 +1,14 @@
+bool: "http://www.w3.org/2001/XMLSchema#boolean"
+int8: "http://www.w3.org/2001/XMLSchema#byte"
+uint8: "http://www.w3.org/2001/XMLSchema#unsignedByte"
+int16: "http://www.w3.org/2001/XMLSchema#short"
+uint16: "http://www.w3.org/2001/XMLSchema#unsignedShort"
+int32: "http://www.w3.org/2001/XMLSchema#int"
+uint32: "http://www.w3.org/2001/XMLSchema#unsignedInt"
+int64: "http://www.w3.org/2001/XMLSchema#long"
+uint64: "http://www.w3.org/2001/XMLSchema#unsignedLong"
+float32: "http://www.w3.org/2001/XMLSchema#float"
+float64: "http://www.w3.org/2001/XMLSchema#double"
+string: "http://www.w3.org/2001/XMLSchema#string"
+time:
+duration:
