@@ -7,9 +7,15 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
 )
 
+add_message_files(
+  FILES
+  Fact.msg
+)
+
 add_service_files(
   FILES
-  YakobUpdate.srv
+  YakobUpdateGraph.srv
+  YakobUpdateFacts.srv
 )
 
 catkin_python_setup()
