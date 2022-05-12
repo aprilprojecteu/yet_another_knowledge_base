@@ -18,6 +18,17 @@ def get_dummy_objects():
     ]
 
 
+def get_dummy_mobipick_facts():
+    return [
+        ('mobipick', RDF.type, incorap["Robot"]),
+        ('arm_mobipick', RDF.type, incorap["Arm"]),
+        ('mobipick', incorap.has_arm, 'arm_mobipick'),
+        ('table_1_grasp_pose', RDF.type, incorap.Waypoint),
+        ('mobipick', incorap.at, 'table_1_grasp_pose'),
+        ('mobipick', incorap.has_arm_posture, 'default')
+    ]
+
+
 def test_add_facts():
 
     print("In test_add_facts()")
@@ -28,6 +39,15 @@ def test_add_facts():
         f.fact = (obj[0], RDF.type, obj[1])
         f.object_type = "URI"
         facts.append(f)
+
+    for triple in get_dummy_mobipick_facts():
+        f = Fact()
+        f.fact = triple
+        if triple[1] == incorap.has_arm_posture:
+            f.object_type = "string"
+        else:
+            f.object_type = "URI"
+            facts.append(f)
 
     rospy.wait_for_service("yakob_add_facts")
     try:
