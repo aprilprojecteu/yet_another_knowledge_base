@@ -27,6 +27,15 @@ class FusekiConnector(KBConnectorInterface):
             print(f"[WARNING] Fuseki returned {r.status_code}")
 
     def remove_facts(self, facts: list) -> None:
-        r = requests.post(self.fuseki + '/fs/update', data=facts)
-        if r.status_code != 200:
-            print(f"[WARNING] Fuseki returned {r.status_code}")
+
+        for fact in facts:
+            f = self.get_node_triple(fact.fact, fact.object_type)
+            q = f"""
+            DELETE DATA {{ <{f[0]}> <{f[1]}> <{f[2]}> }}
+            """
+            print(q)
+
+            r = requests.post(self.fuseki + '/fs/update', data=q,
+                              headers={'Content-Type': 'application/sparql-update'})
+            if r.status_code != 200:
+                print(f"[WARNING] Fuseki returned {r.status_code}")
