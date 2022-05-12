@@ -4,8 +4,8 @@ from rdflib import Graph
 
 class RDFlibConnector(KBConnectorInterface):
 
-    def __init__(self, typemap_path) -> None:
-        super().__init__(typemap_path)
+    def __init__(self, typemap_path, namespace) -> None:
+        super().__init__(typemap_path, namespace)
         self._fs = Graph()
         self._o = Graph()
 

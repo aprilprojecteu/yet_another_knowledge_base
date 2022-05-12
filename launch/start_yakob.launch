@@ -1,4 +1,5 @@
 <launch>
     <param name="/YAKoB/datatype_map" value="$(find yet_another_knowledge_base)/resources/type_xsd_map.yaml"/>
+    <param name="/YAKoB/namespace" value='http://dfki.de/incorap/incorap_domain#'/>
     <node pkg="yet_another_knowledge_base" name="YAKoB" type="YAKoB_node.py" output="screen"/>
 </launch>

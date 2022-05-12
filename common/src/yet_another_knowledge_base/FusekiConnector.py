@@ -5,8 +5,8 @@ from rdflib import Graph
 
 class FusekiConnector(KBConnectorInterface):
 
-    def __init__(self, typemap_path, fuseki="http://127.0.0.1:3030") -> None:
-        super().__init__(typemap_path)
+    def __init__(self, typemap_path, namespace, fuseki="http://127.0.0.1:3030") -> None:
+        super().__init__(typemap_path, namespace)
         self.fuseki = fuseki
 
     def add_facts(self, facts: list) -> None:

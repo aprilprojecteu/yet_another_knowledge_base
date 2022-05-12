@@ -1,13 +1,19 @@
 from abc import abstractmethod
 import yaml
-from rdflib import URIRef, Literal
+from rdflib import URIRef, Literal, Namespace
+import re
 
 
 class KBConnectorInterface:
 
-    def __init__(self, typemap_path) -> None:
+    def __init__(self, typemap_path, namespace) -> None:
         with open(typemap_path, "r") as file:
             self.type_to_xsd = yaml.safe_load(file)
+
+        if isinstance(namespace, Namespace):
+            self.ns = namespace
+        else:
+            self.ns = Namespace(namespace)
 
     @ abstractmethod
     def add_facts(self, facts: list) -> None:

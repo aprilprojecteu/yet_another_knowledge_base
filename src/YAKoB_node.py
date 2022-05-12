@@ -15,11 +15,11 @@ class YetAnotherKnowledgeBase:
             "yakob_remove_facts", YakobUpdateFacts, self.handle_yakob_remove_facts)
 
         self.datatype_map_path = rospy.get_param("/YAKoB/datatype_map")
-        self.c = FusekiConnector(self.datatype_map_path)
+        self.namespace = rospy.get_param("/YAKoB/namespace")
+        self.c = FusekiConnector(self.datatype_map_path, self.namespace)
 
     def run(self):
         while not rospy.is_shutdown():
-            rospy.loginfo("YAKoB is running!")
             rospy.sleep(1.0)
 
     def handle_yakob_add_ontology(self, req):
