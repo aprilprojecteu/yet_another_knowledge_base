@@ -5,9 +5,11 @@ from yet_another_knowledge_base.srv import YakobUpdateFacts
 from yet_another_knowledge_base.msg import Fact
 from rdflib.namespace import RDF, Namespace
 
+incorap = Namespace('http://dfki.de/incorap/incorap_domain#')
+
 
 def get_dummy_objects():
-    incorap = Namespace('http://dfki.de/incorap/incorap_domain#')
+
     return [
         ('relay_1', incorap["Physical_Object"].toPython()),
         ('screwdriver_1', incorap["Physical_Object"].toPython()),
