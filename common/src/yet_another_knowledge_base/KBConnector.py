@@ -28,8 +28,24 @@ class KBConnectorInterface:
     def add_ontology(self, ontology: str) -> None:
         raise NotImplementedError
 
+    def get_URI(self, uri: str) -> URIRef:
+        """
+        Checks if given string is a uri with namespace using a regular expression.
+        If no, adds uri to the internal namespace.
+        Args:
+            uri (str): uri to be generated
+
+        Returns:
+            URIRef: uri as rdflib.URIRef object
+        """
+
+        if re.match("(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])", uri):
+            return URIRef(uri)
+        else:
+            return self.ns[uri]
+
     def get_node_triple(self, fact: tuple, object_type: str) -> tuple:
         if object_type == "URI":
-            return (URIRef(fact[0]), URIRef(fact[1]), URIRef(fact[2]))
+            return (self.get_URI(fact[0]), self.get_URI(fact[1]), self.get_URI(fact[2]))
         else:
-            return (URIRef(fact[0]), URIRef(fact[1]), Literal(fact[2], datatype=self.type_to_xsd[object_type]))
+            return (self.get_URI(fact[0]), self.get_URI(fact[1]), Literal(fact[2], datatype=self.type_to_xsd[object_type]))
