@@ -16,7 +16,7 @@ class YetAnotherKnowledgeBase:
 
         self.datatype_map_path = rospy.get_param("/YAKoB/datatype_map")
         self.namespace = rospy.get_param("/YAKoB/namespace")
-        self.c = Connectors.RDFlibConnector(
+        self.c = Connectors.FusekiConnector(
             self.datatype_map_path, self.namespace)
 
     def run(self):
