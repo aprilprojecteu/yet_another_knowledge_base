@@ -57,8 +57,33 @@ def test_add_facts():
         rospy.logerr("[yakob_add_fact] something went wrong")
 
 
+def test_remove_facts():
+
+    print("In test_remove_facts()")
+
+    deletes = [
+        ('mobipick', incorap.at, 'table_1_grasp_pose'),
+        ('relay_1', RDF.type, incorap["Physical_Object"].toPython())
+    ]
+
+    facts = []
+
+    for fact in deletes:
+        f = Fact()
+        f.fact = fact
+        f.object_type = "URI"
+        facts.append(f)
+
+    rospy.wait_for_service("yakob_remove_facts")
+    try:
+        del_facts = rospy.ServiceProxy("yakob_remove_facts", YakobUpdateFacts)
+        del_facts(facts)
+    except rospy.ServiceException:
+        rospy.logerr("[yakob_delete_fact] something went wrong")
+
+
 if __name__ == "__main__":
     rospy.init_node("yakob_test_node")
-    while not rospy.is_shutdown():
-        test_add_facts()
-        rospy.sleep(5)
+    test_add_facts()
+    rospy.sleep(5)
+    test_remove_facts()
