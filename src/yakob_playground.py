@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import rospy
 from yet_another_knowledge_base.srv import YakobUpdateFacts
 from yet_another_knowledge_base.msg import Fact
