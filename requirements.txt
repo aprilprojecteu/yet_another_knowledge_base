@@ -1,0 +1,4 @@
+rdflib
+pyyaml
+requests
+regex
