@@ -2,8 +2,7 @@
 
 import rospy
 from yet_another_knowledge_base.srv import YakobUpdateFacts, YakobUpdateFactsResponse, YakobUpdateGraph, YakobUpdateGraphResponse
-from yet_another_knowledge_base.FusekiConnector import FusekiConnector
-from yet_another_knowledge_base.RDFlibConnector import RDFlibConnector
+import yet_another_knowledge_base.KBConnectors as Connectors
 
 
 class YetAnotherKnowledgeBase:
@@ -17,7 +16,8 @@ class YetAnotherKnowledgeBase:
 
         self.datatype_map_path = rospy.get_param("/YAKoB/datatype_map")
         self.namespace = rospy.get_param("/YAKoB/namespace")
-        self.c = RDFlibConnector(self.datatype_map_path, self.namespace)
+        self.c = Connectors.RDFlibConnector(
+            self.datatype_map_path, self.namespace)
 
     def run(self):
         while not rospy.is_shutdown():
