@@ -59,3 +59,7 @@ to start the knowledge base. Default namespace is the incorap namespace "<http:/
  `self.c = Connectors.RDFlibConnector(self.datatype_map_path, self.namespace)`
 
  yakob_playground.py is the node for your own experiments. Some hardcoded facts are in there, but feel free to go wild here.
+
+## Ontology
+
+You find the incorap ontology in ressources/ontologies.
