@@ -1,0 +1,87 @@
+@prefix : <http://dfki.de/incorap/incorap_domain#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://dfki.de/incorap/incorap_domain> .
+
+<http://dfki.de/incorap/incorap_domain> rdf:type owl:Ontology .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://dfki.de/incorap/incorap_domain#at
+:at rdf:type owl:ObjectProperty ;
+    rdfs:domain :Agent ;
+    rdfs:range :Waypoint .
+
+
+###  http://dfki.de/incorap/incorap_domain#has_arm
+:has_arm rdf:type owl:ObjectProperty ;
+         rdfs:domain :Robot ;
+         rdfs:range :Arm .
+
+
+###  http://dfki.de/incorap/incorap_domain#on
+:on rdf:type owl:ObjectProperty ;
+    rdfs:domain :Physical_Object ;
+    rdfs:range :Surface .
+
+
+###  http://dfki.de/incorap/incorap_domain#reachable_from
+:reachable_from rdf:type owl:ObjectProperty ;
+                rdfs:domain :Physical_Object ;
+                rdfs:range :Waypoint .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://dfki.de/incorap/incorap_domain#has_arm_posture
+:has_arm_posture rdf:type owl:DatatypeProperty ;
+                 rdfs:domain :Arm ,
+                             :Robot ;
+                 rdfs:range xsd:string .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://dfki.de/incorap/incorap_domain#Agent
+:Agent rdf:type owl:Class .
+
+
+###  http://dfki.de/incorap/incorap_domain#Arm
+:Arm rdf:type owl:Class .
+
+
+###  http://dfki.de/incorap/incorap_domain#Physical_Object
+:Physical_Object rdf:type owl:Class .
+
+
+###  http://dfki.de/incorap/incorap_domain#Place
+:Place rdf:type owl:Class .
+
+
+###  http://dfki.de/incorap/incorap_domain#Robot
+:Robot rdf:type owl:Class ;
+       rdfs:subClassOf :Agent .
+
+
+###  http://dfki.de/incorap/incorap_domain#Surface
+:Surface rdf:type owl:Class ;
+         rdfs:subClassOf :Place .
+
+
+###  http://dfki.de/incorap/incorap_domain#Waypoint
+:Waypoint rdf:type owl:Class ;
+          rdfs:subClassOf :Place .
+
+
+###  http://dfki.de/incorap/incorap_domain#Worker
+:Worker rdf:type owl:Class ;
+        rdfs:subClassOf :Agent .
