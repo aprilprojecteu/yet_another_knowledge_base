@@ -85,5 +85,5 @@ def test_remove_facts():
 if __name__ == "__main__":
     rospy.init_node("yakob_test_node")
     test_add_facts()
-    rospy.sleep(5)
+    # rospy.sleep(5)
     test_remove_facts()

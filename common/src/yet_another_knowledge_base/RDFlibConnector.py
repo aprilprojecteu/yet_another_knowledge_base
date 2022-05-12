@@ -8,6 +8,8 @@ class RDFlibConnector(KBConnectorInterface):
         super().__init__(typemap_path, namespace)
         self._fs = Graph()
         self._o = Graph()
+        self._fs.bind("", self.ns)
+        self._o.bind("", self.ns)
 
     def add_facts(self, facts: list) -> None:
 
@@ -22,3 +24,5 @@ class RDFlibConnector(KBConnectorInterface):
 
         for fact in facts:
             self._fs.remove(self.get_node_triple(fact.fact, fact.object_type))
+
+        print(self._fs.serialize())
