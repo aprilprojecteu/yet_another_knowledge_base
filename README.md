@@ -6,12 +6,26 @@ Ros Node for communication with a Apache Jena Fuseki triple store.
 
 ### Apache Jena Fuseki
 
+Make sure you have the Java Developent Kit 11 installed:
+
+> java --version
+
+If not, install it with
+
+> sudo apt install default-jre
+
 Download: <https://jena.apache.org/download/index.cgi>
 
 Run server from Fuseki root folder with:
 > .fuseki-server
 
-This starts a Apache Jena Fuseki Server at localhost:3030. Open this in your favourite browser, navigate to "manage datasets" and add two new datasets, one called **fs** (Dataset type in-memory) as fact store, one called **o** (Dataset type Persistent).
+This starts a Apache Jena Fuseki Server at localhost:3030.
+
+If you get "Error: A JNI error has occurred, please check your installation and try again", you have sourced the wrong Java version and need to run
+
+> export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+
+Once the server is running, open localhost:3030 in your favourite browser, navigate to "manage datasets" and add two new datasets, one called **fs** (Dataset type in-memory) as fact store, one called **o** (Dataset type Persistent).
 
 ### Python
 
