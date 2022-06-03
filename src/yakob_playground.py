@@ -45,6 +45,7 @@ def test_add_facts():
         f.fact = triple
         if triple[1] == incorap.has_arm_posture:
             f.object_type = "string"
+            facts.append(f)
         else:
             f.object_type = "URI"
             facts.append(f)
@@ -81,6 +82,8 @@ def test_remove_facts():
     except rospy.ServiceException:
         rospy.logerr("[yakob_delete_fact] something went wrong")
 
+
+def test_query():
     rospy.wait_for_service("yakob_query")
 
     q = """
@@ -107,3 +110,4 @@ if __name__ == "__main__":
     test_add_facts()
     # rospy.sleep(5)
     test_remove_facts()
+    test_query()
