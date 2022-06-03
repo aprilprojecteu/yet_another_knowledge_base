@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 
 import rospy
-from yet_another_knowledge_base.srv import YakobUpdateFacts, YakobUpdateFactsResponse, YakobUpdateGraph, YakobUpdateGraphResponse
+from yet_another_knowledge_base.msg import QueryResult
+from yet_another_knowledge_base.srv import YakobUpdateFacts, YakobUpdateFactsResponse, YakobUpdateGraph, YakobUpdateGraphResponse, YakobQuery, YakobQueryResponse
 import yet_another_knowledge_base.KBConnectors as Connectors
 
 
@@ -13,6 +14,8 @@ class YetAnotherKnowledgeBase:
             "yakob_add_facts", YakobUpdateFacts, self.handle_yakob_add_facts)
         self.service_remove_fact = rospy.Service(
             "yakob_remove_facts", YakobUpdateFacts, self.handle_yakob_remove_facts)
+        self.service_query = rospy.Service(
+            "yakob_query", YakobQuery, self.handle_yakob_query)
 
         self.datatype_map_path = rospy.get_param("/YAKoB/datatype_map")
         self.namespace = rospy.get_param("/YAKoB/namespace")
@@ -34,6 +37,12 @@ class YetAnotherKnowledgeBase:
     def handle_yakob_remove_facts(self, req):
         self.c.remove_facts(facts=req.facts)
         return YakobUpdateFactsResponse()
+
+    def handle_yakob_query(self, req):
+        r = self.c.query(req.query)
+        res = QueryResult(r['n_results'], r["n_values"],
+                          r["values"], r["types"])
+        return YakobQueryResponse(res)
 
 
 if __name__ == "__main__":

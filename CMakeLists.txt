@@ -10,12 +10,14 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   Fact.msg
+  QueryResult.msg
 )
 
 add_service_files(
   FILES
   YakobUpdateGraph.srv
   YakobUpdateFacts.srv
+  YakobQuery.srv
 )
 
 catkin_python_setup()

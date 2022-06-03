@@ -29,6 +29,10 @@ class KBConnectorInterface:
     def add_ontology(self, ontology: str) -> None:
         raise NotImplementedError
 
+    @abstractmethod
+    def query(self, query: str):
+        raise NotImplementedError
+
     def get_URI(self, uri: str) -> URIRef:
         """
         Checks if given string is a uri with namespace using a regular expression.
@@ -89,6 +93,24 @@ class FusekiConnector(KBConnectorInterface):
             if r.status_code != 200:
                 print(f"[WARNING] Fuseki returned {r.status_code}")
 
+    def query(self, query: str):
+        r = requests.post(self.fuseki + "/fs/sparql", query, headers={
+                          'Content-Type': 'application/sparql-query', 'Accept': 'application/json'})
+        n_results = len(r.json()["results"]["bindings"])
+        n_values = len(r.json()["results"]["bindings"][0].keys())
+        values = []
+        types = []
+
+        for result in r.json()["results"]["bindings"]:
+            for e in result:
+                values.append(result[e]['value'])
+                types.append(result[e]['type'])
+
+        return {"n_results": n_results,
+                "n_values": n_values,
+                "values": values,
+                "types": types}
+
 
 class RDFlibConnector(KBConnectorInterface):
 
@@ -114,3 +136,7 @@ class RDFlibConnector(KBConnectorInterface):
             self._fs.remove(self.get_node_triple(fact.fact, fact.object_type))
 
         print(self._fs.serialize())
+
+    def query(self, query: str):
+
+        print("[WARNING] Not implemented yet")

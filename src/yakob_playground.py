@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import rospy
-from yet_another_knowledge_base.srv import YakobUpdateFacts
+from yet_another_knowledge_base.srv import YakobUpdateFacts, YakobQuery
 from yet_another_knowledge_base.msg import Fact
 from rdflib.namespace import RDF, Namespace
 
@@ -80,6 +80,26 @@ def test_remove_facts():
         del_facts(facts)
     except rospy.ServiceException:
         rospy.logerr("[yakob_delete_fact] something went wrong")
+
+    rospy.wait_for_service("yakob_query")
+
+    q = """
+    SELECT ?s ?p ?o
+        WHERE {
+        ?s ?p ?o
+        }
+        LIMIT 25
+    """
+
+    try:
+        yakob_query = rospy.ServiceProxy("yakob_query", YakobQuery)
+        r = yakob_query(q)
+        r = r.result
+        for i in range(r.n_results):
+            print(r.values[i * r.n_values], r.values[i *
+                  r.n_values + 1], r.values[i * r.n_values + 2])
+    except rospy.ServiceException:
+        rospy.logerr("[yakob_query] something went wrong")
 
 
 if __name__ == "__main__":
