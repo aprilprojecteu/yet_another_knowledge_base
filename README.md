@@ -40,14 +40,14 @@ The package contains a launch file, which starts the YAKoB_node, which is a ros 
 ### Messages
 
 - Fact.msg:
-  - fact: Triple of strings
-  - object_type: string, should be URI if the object of the fact is a URI eg. a  concept inside an ontology. Or should be one of the ros datatypes, which will be mapped to an xsd:type for storage inside the triple store.
+  - string[3] fact: Triple of strings
+  - string object_type: should be URI if the object of the fact is a URI eg. a  concept inside an ontology. Or should be one of the ros datatypes, which will be mapped to an xsd:type for storage inside the triple store.
 
 - QueryResult.msg:
-  - n_results: Number of returned results
-  - n_values: Number of values per result (example: for SELECT ?s ?p ?o n_values = 3)
-  - values: List of entities as strings returned from query
-  - types: List of strings. States whether according value is of type url or literal
+  - uint32 n_results: Number of returned results
+  - uint8 n_values: Number of values per result (example: for SELECT ?s ?p ?o n_values = 3)
+  - string[] values: List of entities as strings returned from query
+  - string[] types: States whether according value is of type url or literal
 
 - YakobUpdateFact.srv: Service message for adding, deleting or modifying (not implemented) facts to the fact store.
   - Fact[] facts: Array of Facts to be updated
@@ -59,7 +59,7 @@ The package contains a launch file, which starts the YAKoB_node, which is a ros 
 
 - YakobQuery.srv: Service message for querying the knowledge base with a SPARQL query.
   - string query: SPARQL query as single string
-  - returns: QueryResult.msg
+  - returns QueryResult result
 
 ### Services
 
