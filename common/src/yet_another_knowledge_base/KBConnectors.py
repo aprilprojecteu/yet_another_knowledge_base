@@ -10,11 +10,16 @@ class KBConnectorInterface:
     def __init__(self, typemap_path, namespace) -> None:
         with open(typemap_path, "r") as file:
             self.type_to_xsd = yaml.safe_load(file)
+            self.xsd_to_type = {v: k for k, v in self.type_to_xsd.items()}
 
         if isinstance(namespace, Namespace):
             self.ns = namespace
         else:
             self.ns = Namespace(namespace)
+
+        self.g = Graph()
+        self.g.bind("", self.ns)
+        self.nm = self.g.namespace_manager
 
     @ abstractmethod
     def add_facts(self, facts: list) -> None:
@@ -71,13 +76,13 @@ class FusekiConnector(KBConnectorInterface):
         r = requests.post(self.fuseki + "/fs/data",
                           data=g.serialize(format="ttl"), headers={'Content-Type': 'text/turtle'})
         if r.status_code != 200:
-            print(f"[WARNING] Fuseki returned {r.status_code}")
+            print(f"Fuseki returned {r.status_code}")
 
     def add_ontology(self, ontology: str) -> None:
         r = requests.post(self.fuseki + "/o/data",
                           data=ontology, headers={'Content-Type': 'text/turtle'})
         if r.status_code != 200:
-            print(f"[WARNING] Fuseki returned {r.status_code}")
+            print(f"Fuseki returned {r.status_code}")
 
     def remove_facts(self, facts: list) -> None:
 
@@ -91,7 +96,7 @@ class FusekiConnector(KBConnectorInterface):
             r = requests.post(self.fuseki + '/fs/update', data=q,
                               headers={'Content-Type': 'application/sparql-update'})
             if r.status_code != 200:
-                print(f"[WARNING] Fuseki returned {r.status_code}")
+                print(f"Fuseki returned {r.status_code}")
 
     def query(self, query: str):
         r = requests.post(self.fuseki + "/fs/sparql", query, headers={
@@ -103,8 +108,18 @@ class FusekiConnector(KBConnectorInterface):
 
         for result in r.json()["results"]["bindings"]:
             for e in result:
-                values.append(result[e]['value'])
                 types.append(result[e]['type'])
+                if result[e]['type'] == 'uri':
+                    values.append(result[e]['value'])
+                    # types.append(result[e]['type'])
+                elif result[e]['type'] == 'literal':
+                    values.append(str(Literal(result[e]['value'])))
+                    print(Literal(result[e]['value']))
+                    # types.append(
+                    #     Literal(result[e]['value']).datatype.toPython())
+                else:
+                    print(
+                        f"[WARNING] Got {result[e]['type']} as value type from Fuseki.")
 
         return {"n_results": n_results,
                 "n_values": n_values,
